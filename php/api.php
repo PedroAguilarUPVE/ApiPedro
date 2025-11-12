@@ -1,7 +1,7 @@
 <?php
 include(__DIR__ . "/conexion.php");
 
-header("Content-Type:aplication/json");
+header("Content-Type:application/json");
 $metodo = $_SERVER["REQUEST_METHOD"];
 //print_r($metodo);
 
@@ -63,10 +63,9 @@ function insertar($conn)
     $resultado = $conn->query($sql);
 
     if ($resultado) {
-        $dato["Id"] = $conn->insert_id;
-        // echo json_encode(["mensaje" => "Alumno registrado correctamente", "alumno" => $dato]);
+        echo json_encode(["mensaje" => "Alumno registrado correctamente"]);
     } else {
-        // echo json_encode(["error" => "Error al registrar el alumno: " . $conn->error]);
+        echo json_encode(["error" => "Error al insertar: " . $conn->error]);
     }
 }
 
@@ -123,6 +122,3 @@ function eliminar($conn)
         echo json_encode(["error" => "Error al eliminar el alumno: " . $conn->error]);
     }
 }
-
-?>
-

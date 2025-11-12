@@ -3,282 +3,261 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Alumnos</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
+    <h1>Registrar Alumno</h1>
 
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">Gestión de Alumnos</h1>
+    <form id="formAlumno">
+        <input type="text" name="Matricula" placeholder="Matrícula" required pattern="\d{1,9}" title="Solo números, máximo 9 dígitos"><br>
+        <input type="text" name="Nombre" placeholder="Nombre" required maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+        <input type="text" name="Apaterno" placeholder="Apellido Paterno" required maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+        <input type="text" name="Amaterno" placeholder="Apellido Materno" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+        <input type="email" name="Email" placeholder="Correo electrónico" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Debe ser un correo válido"><br>
+        <input type="text" name="Celular" placeholder="Celular" required pattern="\d{10}" maxlength="10" title="Solo 10 dígitos numéricos"><br>
+        <input type="text" name="CP" placeholder="Código Postal" required pattern="\d{5}" maxlength="5" title="Solo 5 dígitos numéricos"><br>
+        <select name="Sexo" required>
+            <option value="">Seleccionar Sexo</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+        </select><br>
+        <button type="submit">Guardar</button>
+    </form>
 
-        <!-- Formulario de registro -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">Registrar Alumno</div>
-            <div class="card-body">
-                <form action="php/api.php" method="POST" id="formAlumno">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Matrícula</label>
-                            <input type="text" name="Matricula" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" name="Nombre" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Apellido Paterno</label>
-                            <input type="text" name="Apaterno" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Apellido Materno</label>
-                            <input type="text" name="Amaterno" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="Email" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Celular</label>
-                            <input type="text" name="Celular" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Código Postal</label>
-                            <input type="text" name="CP" class="form-control" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Sexo</label>
-                            <select name="Sexo" class="form-select" required>
-                                <option value="">Seleccionar</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-success">Registrar Alumno</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <hr>
 
-        <!-- Tabla de alumnos -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-secondary text-white">Lista de Alumnos</div>
-            <div class="card-body">
-                <table class="table table-striped table-bordered align-middle" id="tablaAlumnos">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Matrícula</th>
-                            <th>Nombre</th>
-                            <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
-                            <th>Email</th>
-                            <th>Celular</th>
-                            <th>CP</th>
-                            <th>Sexo</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaCuerpo"></tbody>
-                </table>
-            </div>
+    <h2>Lista de alumnos</h2>
+    <table border="1" id="tablaAlumnos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Matrícula</th>
+                <th>Nombre</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Email</th>
+                <th>Celular</th>
+                <th>CP</th>
+                <th>Sexo</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Modal para editar alumno -->
+    <div id="modalEditar" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+     background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:8px; width:400px;">
+            <h3>Editar Alumno</h3>
+            <input type="hidden" id="editId">
+
+            <input type="text" id="editMatricula" placeholder="Matrícula" maxlength="9" pattern="\d{1,9}" title="Solo números, máximo 9 dígitos"><br>
+            <input type="text" id="editNombre" placeholder="Nombre" required maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+            <input type="text" id="editApaterno" placeholder="Apellido Paterno" required maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+            <input type="text" id="editAmaterno" placeholder="Apellido Materno" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,50}" title="Solo letras, máximo 50 caracteres"><br>
+            <input type="email" id="editEmail" placeholder="Correo electrónico" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Debe ser un correo válido"><br>
+            <input type="text" id="editCelular" placeholder="Celular" maxlength="9" required pattern="\d{10}" maxlength="10" title="Solo 10 dígitos numéricos"><br>
+            <input type="text" id="editCP" placeholder="Código Postal" maxlength="5" required pattern="\d{5}" maxlength="5" title="Solo 5 dígitos numéricos"><br>
+            <select id="editSexo" required>
+                <option value="">Seleccionar Sexo</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+            </select><br><br>
+
+            <button id="btnGuardarEdicion">Guardar Cambios</button>
+            <button id="btnCerrarModal">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL EDITAR -->
-    <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title">Editar Alumno</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditar">
-                        <input type="hidden" id="editId">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Nombre</label>
-                                <input type="text" id="editNombre" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Apellido Paterno</label>
-                                <input type="text" id="editApaterno" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Apellido Materno</label>
-                                <input type="text" id="editAmaterno" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Email</label>
-                                <input type="email" id="editEmail" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Celular</label>
-                                <input type="text" id="editCelular" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">CP</label>
-                                <input type="text" id="editCP" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Sexo</label>
-                                <select id="editSexo" class="form-select">
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mt-3 text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-warning">Guardar Cambios</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL ELIMINAR -->
-    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Eliminar Alumno</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Seguro que deseas eliminar a <strong id="nombreEliminar"></strong>?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        let alumnoSeleccionado = null;
+        const mensajeDiv = document.createElement("div");
+        mensajeDiv.id = "mensaje";
+        mensajeDiv.style.display = "none";
+        mensajeDiv.style.background = "#2ecc71";
+        mensajeDiv.style.color = "white";
+        mensajeDiv.style.padding = "8px";
+        mensajeDiv.style.borderRadius = "5px";
+        mensajeDiv.style.marginBottom = "10px";
+        mensajeDiv.style.textAlign = "center";
+        document.body.insertBefore(mensajeDiv, document.querySelector("hr"));
 
-        window.onload = function() {
-            cargarAlumnos();
-        };
-
-        function cargarAlumnos() {
-            fetch("php/api.php")
-                .then(res => res.json())
-                .then(datos => {
-                    const cuerpo = document.getElementById("tablaCuerpo");
-                    cuerpo.innerHTML = "";
-
-                    datos.forEach(alumno => {
-                        const fila = document.createElement("tr");
-                        fila.innerHTML = `
-              <td>${alumno.Id}</td>
-              <td>${alumno.Matricula}</td>
-              <td>${alumno.Nombre}</td>
-              <td>${alumno.Apaterno}</td>
-              <td>${alumno.Amaterno ?? ""}</td>
-              <td>${alumno.Email}</td>
-              <td>${alumno.Celular}</td>
-              <td>${alumno.CP}</td>
-              <td>${alumno.Sexo}</td>
-              <td>
-                <button class="btn btn-sm btn-warning me-2" onclick='abrirEditar(${JSON.stringify(alumno)})'> Editar </button>
-                <button class="btn btn-sm btn-danger" onclick='abrirEliminar(${alumno.Id}, "${alumno.Nombre}")'> Eliminar </button>
-              </td>
-            `;
-                        cuerpo.appendChild(fila);
-                    });
-                })
-                .catch(err => console.error("Error:", err));
-        }
-
-        // --- MODAL EDITAR ---
-        function abrirEditar(alumno) {
-            document.getElementById("editId").value = alumno.Id;
-            document.getElementById("editNombre").value = alumno.Nombre;
-            document.getElementById("editApaterno").value = alumno.Apaterno;
-            document.getElementById("editAmaterno").value = alumno.Amaterno ?? "";
-            document.getElementById("editEmail").value = alumno.Email;
-            document.getElementById("editCelular").value = alumno.Celular;
-            document.getElementById("editCP").value = alumno.CP;
-            document.getElementById("editSexo").value = alumno.Sexo;
-
-            const modal = new bootstrap.Modal(document.getElementById("modalEditar"));
-            modal.show();
-        }
-
-        document.getElementById("formEditar").addEventListener("submit", function(e) {
+        document.getElementById("formAlumno").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const datos = {
-                accion: "editar",
+
+            const datos = Object.fromEntries(new FormData(this).entries());
+
+            try {
+                const res = await fetch("php/api.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                const text = await res.text();
+                console.log("Respuesta del servidor:", text);
+
+                let respuesta;
+                try {
+                    respuesta = JSON.parse(text);
+                } catch {
+                    mostrarMensaje("❌ Error: el servidor no devolvió JSON válido.", true);
+                    return;
+                }
+
+                if (respuesta.error) {
+                    mostrarMensaje("❌ " + respuesta.error, true);
+                } else {
+                    mostrarMensaje("✅ " + respuesta.mensaje);
+                    this.reset();
+                    cargarAlumnos(); // actualiza tabla automáticamente
+                }
+
+            } catch (error) {
+                console.error("Error en fetch:", error);
+                mostrarMensaje("❌ Error al conectar con el servidor", true);
+            }
+        });
+
+        async function cargarAlumnos() {
+            try {
+                const res = await fetch("php/api.php");
+                const data = await res.json();
+
+                const tbody = document.querySelector("#tablaAlumnos tbody");
+                tbody.innerHTML = "";
+
+                if (!Array.isArray(data)) {
+                    console.error("Respuesta inesperada:", data);
+                    return;
+                }
+
+                data.forEach(alumno => {
+                    const fila = `
+        <tr>
+            <td>${alumno.Id}</td>
+            <td>${alumno.Matricula}</td>
+            <td>${alumno.Nombre}</td>
+            <td>${alumno.Apaterno}</td>
+            <td>${alumno.Amaterno ?? ""}</td>
+            <td>${alumno.Email}</td>
+            <td>${alumno.Celular}</td>
+            <td>${alumno.CP}</td>
+            <td>${alumno.Sexo}</td>
+            <td><button class="btn-editar" data-id="${alumno.Id}">Editar</button></td>
+            <td><button class="btn-eliminar" data-id="${alumno.Id}">Eliminar</button></td>
+        </tr>`;
+                    tbody.innerHTML += fila;
+                });
+            } catch (error) {
+                console.error("Error al cargar alumnos:", error);
+            }
+        }
+
+        function mostrarMensaje(texto, error = false) {
+            const msg = document.getElementById("mensaje");
+            msg.textContent = texto;
+            msg.style.background = error ? "#e74c3c" : "#2ecc71";
+            msg.style.display = "block";
+            setTimeout(() => {
+                msg.style.display = "none";
+            }, 2500);
+        }
+
+
+        // Botones de eliminar y editar
+
+        document.addEventListener("click", async function(e) {
+            if (e.target.classList.contains("btn-eliminar")) {
+                const id = e.target.dataset.id;
+                if (confirm("¿Seguro que deseas eliminar este alumno?")) {
+                    await fetch("php/api.php", {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            Id: id
+                        })
+                    });
+                    alert("Alumno eliminado correctamente");
+                    cargarAlumnos();
+                }
+            }
+
+            if (e.target.classList.contains("btn-editar")) {
+                const id = e.target.dataset.id;
+                const fila = e.target.closest("tr");
+                const celdas = fila.querySelectorAll("td");
+
+                // Abrir la ventana modal
+                document.getElementById("modalEditar").style.display = "block";
+
+                // Rellenar campos con los datos del alumno seleccionado
+                document.getElementById("editId").value = id;
+                document.getElementById("editMatricula").value = celdas[1].textContent;
+                document.getElementById("editNombre").value = celdas[2].textContent;
+                document.getElementById("editApaterno").value = celdas[3].textContent;
+                document.getElementById("editAmaterno").value = celdas[4].textContent;
+                document.getElementById("editEmail").value = celdas[5].textContent;
+                document.getElementById("editCelular").value = celdas[6].textContent;
+                document.getElementById("editCP").value = celdas[7].textContent;
+                document.getElementById("editSexo").value = celdas[8].textContent;
+            }
+
+        });
+
+        // Cerrar modal
+        document.getElementById("btnCerrarModal").addEventListener("click", () => {
+            document.getElementById("modalEditar").style.display = "none";
+        });
+
+        // Guardar cambios
+        document.getElementById("btnGuardarEdicion").addEventListener("click", async () => {
+            const alumnoActualizado = {
                 Id: document.getElementById("editId").value,
+                Matricula: document.getElementById("editMatricula").value,
                 Nombre: document.getElementById("editNombre").value,
                 Apaterno: document.getElementById("editApaterno").value,
                 Amaterno: document.getElementById("editAmaterno").value,
                 Email: document.getElementById("editEmail").value,
                 Celular: document.getElementById("editCelular").value,
                 CP: document.getElementById("editCP").value,
-                Sexo: document.getElementById("editSexo").value
+                Sexo: document.getElementById("editSexo").value,
             };
 
-            fetch("php/api.php", {
-                    method: "POST",
+            try {
+                const res = await fetch("php/api.php", {
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(datos)
-                }).then(res => res.json())
-                .then(r => {
-                    alert(r.mensaje || "Alumno actualizado");
-                    cargarAlumnos();
-                    bootstrap.Modal.getInstance(document.getElementById("modalEditar")).hide();
+                    body: JSON.stringify(alumnoActualizado),
                 });
+
+                const data = await res.json();
+                if (data.mensaje) {
+                    alert("✅ " + data.mensaje);
+                    document.getElementById("modalEditar").style.display = "none";
+                    cargarAlumnos(); // 🔁 Recargar tabla
+                } else {
+                    alert("❌ " + (data.error || "Error al actualizar"));
+                }
+            } catch (error) {
+                console.error("Error al actualizar:", error);
+                alert("❌ Error al conectar con el servidor");
+            }
         });
 
-        // --- MODAL ELIMINAR ---
-        let idEliminar = null;
 
-        function abrirEliminar(id, nombre) {
-            idEliminar = id;
-            document.getElementById("nombreEliminar").textContent = nombre;
-            const modal = new bootstrap.Modal(document.getElementById("modalEliminar"));
-            modal.show();
-        }
-
-        document.getElementById("btnConfirmarEliminar").addEventListener("click", function() {
-            fetch("php/api.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        accion: "eliminar",
-                        Id: idEliminar
-                    })
-                }).then(res => res.json())
-                .then(r => {
-                    alert(r.mensaje || "Alumno eliminado");
-                    cargarAlumnos();
-                    bootstrap.Modal.getInstance(document.getElementById("modalEliminar")).hide();
-                });
-        });
+        cargarAlumnos();
     </script>
-
-    <style>
-        tr:hover {
-            background-color: #f1f1f1;
-            cursor: pointer;
-        }
-    </style>
 
 </body>
 
